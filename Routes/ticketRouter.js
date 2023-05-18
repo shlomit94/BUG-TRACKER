@@ -2,10 +2,11 @@ const express = require("express");
 const router = express.Router();
 const ticketBL = require("../BLs/ticketBL");
 
-router.post("/", async (req, res) => {
+router.post("/:userid/:projectid", async (req, res) => {
   try {
+    const { userid, projectid } = req.params;
     const ticketObj = req.body;
-    const newTicket = await ticketBL.createTicket(ticketObj);
+    const newTicket = await ticketBL.createTicket(ticketObj, userid, projectid);
     res.status(200).json(newTicket);
   } catch (error) {
     res.status(500).json(error);

@@ -1,11 +1,34 @@
 const ticketModel = require("../Models/ticketModel");
+const userModel = require("../Models/userModel");
+const projectModel = require("../Models/projectModel");
 
-const createTicket = async (ticketObj) => {
+const createTicket = async (ticketObj, userId, projectId) => {
   try {
-    await ticketModel.create(ticketObj);
-    return "Created!";
-  } catch (error) {
-    return "Failed to create :(";
+    ticketObj.authorId = userId;
+    ticketObj.projectId = projectId;
+    console.log(ticketObj);
+    const newTicket = await ticketModel.create(ticketObj);
+    const insert_ticketId_to_user_doc = await userModel.findByIdAndUpdate(
+      userId,
+      {
+        $push: {
+          userTickets: newTicket._id,
+        },
+      }
+    );
+
+    const insert_ticketId_to_project_doc = await projectModel.findByIdAndUpdate(
+      projectId,
+      {
+        $push: {
+          ticketsId: newTicket._id,
+        },
+      }
+    );
+
+    return "created";
+  } catch (err) {
+    return "Failed to create";
   }
 };
 
