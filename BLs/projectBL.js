@@ -5,7 +5,7 @@ const createProject = async (projectObj) => {
     await projectModel.create(projectObj);
     return "Created!";
   } catch (error) {
-    return "Failed to create :(.";
+    return "Failed to create :(";
   }
 };
 
@@ -47,7 +47,6 @@ const updateProject = async (id, projectObj) => {
 
 const deleteProject = async (id) => {
   try {
-    console.log(id);
     await projectModel.findByIdAndDelete(id);
     return "Deleted!";
   } catch (error) {
