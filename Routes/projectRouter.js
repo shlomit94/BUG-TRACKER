@@ -2,13 +2,16 @@ const express = require("express");
 const router = express.Router();
 const projectBL = require("../BLs/projectBL");
 
-router.post("/", async (req, res) => {
+router.post("/:userid", async (req, res) => {
   try {
+    const { userid } = req.params;
+    console.log(userid);
     const projectObj = req.body;
-    const newProject = await projectBL.createProject(projectObj);
+    console.log(projectObj);
+    const newProject = await projectBL.createProject(projectObj, userid);
     res.status(200).json(newProject);
-  } catch (error) {
-    res.status(500).json(error);
+  } catch (err) {
+    res.status(500).json(err);
   }
 });
 

@@ -1,11 +1,22 @@
 const projectModel = require("../Models/projectModel");
+const userModel = require("../Models/userModel");
 
-const createProject = async (projectObj) => {
+const createProject = async (projectObj, userId) => {
   try {
-    await projectModel.create(projectObj);
+    projectObj.authorId = userId;
+    const newProject = await projectModel.create(projectObj);
+    console.log(newProject);
+    const insert_projectId_to_user_doc = await userModel.findByIdAndUpdate(
+      userId,
+      {
+        $push: {
+          userProjects: newProject._id,
+        },
+      }
+    );
     return "Created!";
   } catch (error) {
-    return "Failed to create :(";
+    return "Failed";
   }
 };
 

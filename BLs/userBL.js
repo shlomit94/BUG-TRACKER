@@ -44,7 +44,7 @@ const loginUser = async (userObj) => {
 
 const getAllUsers = async () => {
   try {
-    const users = await userModel.find({});
+    const users = await userModel.find({}).populate("userProjects");
     return users;
   } catch (error) {
     throw error;
